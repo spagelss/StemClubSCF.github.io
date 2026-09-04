@@ -1,4 +1,4 @@
-index.html
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -34,7 +34,7 @@ index.html
     --sc-green:  #1F8A5F;   /* SCF green accent                   */
     --sc-teal:   #2FA6A0;   /* teal accent                        */
     --sc-mist:   #EAF4F1;   /* pale panel background               */
-    --sc-paper:  #FBFDFC;   /* page background                    */
+    --sc-paper:  #FBFDFC00;   /* page background                    */
     --sc-ink:    #10242E;   /* body text                          */
     --sc-ink-soft: #46606A; /* secondary text                     */
     --sc-line:   #D6E6E1;   /* hairline borders                   */
@@ -46,6 +46,8 @@ index.html
   html, body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    min-width: 0;
     background: var(--sc-paper);
     font-family: var(--sc-font-body);
     color: var(--sc-ink);
@@ -54,6 +56,7 @@ index.html
   p { margin: 0 0 0.7em; line-height: 1.55; }
 
   .stemclub-embed {
+    width: 100%;
     max-width: 900px;
     margin: 0 auto;
     border-radius: 18px;
@@ -182,6 +185,7 @@ index.html
   .sc-foot a { text-decoration: none; border-bottom: 1px solid var(--sc-line); }
 
   @media (max-width: 560px) {
+    .stemclub-embed { border-radius: 0; border-left: 0; border-right: 0; }
     .sc-hero, .sc-section, .sc-foot { padding-left: 20px; padding-right: 20px; }
     .sc-facts { grid-template-columns: 1fr; }
     .sc-atom { display: none; }
@@ -214,11 +218,11 @@ index.html
     <div class="sc-facts">
       <div class="sc-fact">
         <div class="sc-fact-label">Meets</div>
-        <div class="sc-fact-value">Thursdays, 3:00–4:00 PM</div>
+        <div class="sc-fact-value">Wednesdays, 2:00–3:00 PM</div>
       </div>
       <div class="sc-fact">
         <div class="sc-fact-label">Where</div>
-        <div class="sc-fact-value">Bradenton Campus, Building 5, Rm 108</div>
+        <div class="sc-fact-value">Bradenton Campus, Building 25, Rm 139</div>
       </div>
       <div class="sc-fact">
         <div class="sc-fact-label">Open to</div>
@@ -250,14 +254,14 @@ index.html
         <div class="sc-activity-mark"></div>
         <div>
           <h3>Campus outreach</h3>
-          <p>STEM demo tables at SCF events, and volunteer trips to local schools for science-fair judging and demos.</p>
+          <p>STEM demo tables at SCF events, and volunteer trips to local schools for science demos.</p>
         </div>
       </div>
       <div class="sc-activity">
         <div class="sc-activity-mark"></div>
         <div>
           <h3>Competitions &amp; field trips</h3>
-          <p>Hackathons, regional competitions, and visits to labs and companies in the Sarasota–Manatee area.</p>
+          <p>Hackathons, local competitions, and visits to labs and companies in the Sarasota–Manatee area.</p>
         </div>
       </div>
     </div>
@@ -268,21 +272,21 @@ index.html
     <h2 class="sc-h2">Upcoming events</h2>
     <div class="sc-events">
       <div class="sc-event">
-        <div class="sc-event-date"><span class="d">11</span><span class="m">Sep</span></div>
+        <div class="sc-event-date"><span class="d">09</span><span class="m">Sep</span></div>
         <div class="sc-event-body">
-          <h3>First meeting of the semester</h3>
-          <p>Intro to STEM Club, project sign-ups, and pizza. Building 5, Rm 108.</p>
+          <h3>Second meeting of the semester</h3>
+          <p>Intro to STEM Club, project sign-ups, and fundrasing ideas. Building 25, Rm 108.</p>
         </div>
       </div>
       <div class="sc-event">
-        <div class="sc-event-date"><span class="d">25</span><span class="m">Sep</span></div>
+        <div class="sc-event-date"><span class="d">21-25</span><span class="m">Sep</span></div>
         <div class="sc-event-body">
-          <h3>Guest speaker: SCF Engineering faculty</h3>
-          <p>A look at transfer pathways into engineering programs.</p>
+          <h3>Coding Week</h3>
+          <p>A look at Coding and Artificial Intelligence pathways into engineering programs.</p>
         </div>
       </div>
       <div class="sc-event">
-        <div class="sc-event-date"><span class="d">09</span><span class="m">Oct</span></div>
+        <div class="sc-event-date"><span class="d">TBD</span><span class="m">Oct</span></div>
         <div class="sc-event-body">
           <h3>Build night: mini robotics</h3>
           <p>Teams assemble and program a simple line-following robot.</p>
@@ -301,14 +305,14 @@ index.html
         <div class="sc-event-date"><span class="d">02</span><span class="m">Sep</span></div>
         <div class="sc-event-body">
           <h3>Welcome back!</h3>
-          <p>First meeting is Sep 11 — bring a friend, pizza's on us.</p>
+          <p>Second meeting is Sep 9 — bring a friend, and good vibes.</p>
         </div>
       </a>
       <a class="sc-event" href="#" target="_blank" rel="noopener">
         <div class="sc-event-date"><span class="d">28</span><span class="m">Aug</span></div>
         <div class="sc-event-body">
           <h3>Officer applications open</h3>
-          <p>Interested in a leadership role this year? Fill out the interest form linked in Canvas.</p>
+          <p>Interested in a leadership role next year? Talk to our leadership  team this year for shadow opportunities.</p>
         </div>
       </a>
     </div>
@@ -317,7 +321,6 @@ index.html
   <!-- ===================== FOOTER ===================== -->
   <div class="sc-foot">
     <span>State College of Florida · Registered Student Organization</span>
-    <span><a href="#" target="_blank" rel="noopener">Instagram</a> · <a href="#" target="_blank" rel="noopener">Discord</a></span>
   </div>
 
 </div>

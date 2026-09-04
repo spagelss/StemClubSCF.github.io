@@ -2,10 +2,9 @@ STEM Club at SCF — Canvas page
 A single self-contained page (`index.html`) meant to be hosted on GitHub
 Pages, then embedded into a Canvas course via an iframe.
 1. Put it on GitHub
-Create a new public repository (Pages needs public, unless you're
-on GitHub Enterprise/Pro with private Pages).
-Add `index.html` to the root of the repo (drag-and-drop on github.com
-works fine, or `git add / commit / push` if you're working locally).
+This repository is already ready for Pages. Push the `main` branch, then
+enable Pages as described below. The published URL will be:
+`https://spagelss.github.io/StemClubSCF.github.io/`
 2. Turn on GitHub Pages
 In the repo, go to Settings → Pages.
 Under "Build and deployment," set Source to `Deploy from a branch`.
@@ -19,16 +18,17 @@ In the Canvas page/module item, open the Rich Content Editor's HTML
 editor (`</>` icon) and paste:
 ```html
 <iframe
-  src="https://your-username.github.io/your-repo-name/"
+  src="https://spagelss.github.io/StemClubSCF.github.io/"
   title="STEM Club at SCF"
-  style="width:100%; max-width:900px; height:1500px; border:0; display:block; margin:0 auto;"
+  style="width:100%; height:1500px; border:0; display:block;"
+  loading="lazy"
 ></iframe>
 ```
-Unlike pasted `<script>` tags, Canvas doesn't sanitize iframes pointed at
-outside sites, so this works regardless of your role/permissions. Adjust
-`height` if content is cut off or there's extra blank space — iframes
-don't auto-resize to their content, so you may need to nudge that number
-after your first save.
+Canvas may remove unsupported attributes or styles when saving. If it does,
+keep at least `src`, `title`, `width="100%"`, `height="1500"`, and
+`frameborder="0"`. The iframe does not auto-resize to its content, so raise
+the height if the footer is cut off; `1500px` is a good starting point for
+this page.
 4. Making updates
 Edit `index.html` (either right in the GitHub web UI's editor, or locally
 and push). GitHub Pages usually redeploys within a minute — no changes
