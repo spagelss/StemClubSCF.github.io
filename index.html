@@ -179,6 +179,29 @@
   .sc-event-body h3 { font-size: 15.5px; font-weight: 600; margin: 0 0 3px; font-family: var(--sc-font-head); }
   .sc-event-body p { font-size: 13.5px; color: var(--sc-ink-soft); margin: 0; }
 
+  .sc-editor { border-top: 1px solid var(--sc-line); background: #F3F8F6; }
+  .sc-editor summary { cursor: pointer; padding: 16px 34px; font-family: var(--sc-font-head); font-weight: 600; color: var(--sc-navy); }
+  .sc-editor-body { padding: 0 34px 24px; }
+  .sc-editor-gate { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
+  .sc-editor-gate label { flex: 1 1 220px; font-size: 13px; font-weight: 600; color: var(--sc-ink); }
+  .sc-editor-gate input { display: block; width: 100%; margin-top: 6px; border: 1px solid var(--sc-line); border-radius: 6px; padding: 9px 10px; font: inherit; font-size: 13px; color: var(--sc-ink); background: #fff; }
+  .sc-editor-error { flex-basis: 100%; min-height: 1.3em; margin: 0; font-size: 13px; color: #A33B3B; }
+  .sc-editor-content[hidden] { display: none; }
+  .sc-editor-note { font-size: 13px; color: var(--sc-ink-soft); margin-bottom: 18px; }
+  .sc-editor-group { padding-top: 18px; border-top: 1px solid var(--sc-line); }
+  .sc-editor-group + .sc-editor-group { margin-top: 20px; }
+  .sc-editor-group h3 { margin: 0 0 12px; font-family: var(--sc-font-head); font-size: 16px; color: var(--sc-ink); }
+  .sc-editor-list { display: flex; flex-direction: column; gap: 10px; }
+  .sc-editor-row { display: grid; grid-template-columns: 76px 76px 1fr 1.5fr auto; gap: 8px; align-items: start; }
+  .sc-editor-row.announcement { grid-template-columns: 76px 76px 1fr 1.5fr 1fr auto; }
+  .sc-editor input, .sc-editor textarea { width: 100%; min-width: 0; border: 1px solid var(--sc-line); border-radius: 6px; padding: 9px 10px; font: inherit; font-size: 13px; color: var(--sc-ink); background: #fff; }
+  .sc-editor textarea { min-height: 38px; resize: vertical; }
+  .sc-editor button { border: 0; border-radius: 6px; padding: 10px 13px; cursor: pointer; font: 600 13px var(--sc-font-head); color: #fff; background: var(--sc-navy); }
+  .sc-editor button:hover { background: var(--sc-green); }
+  .sc-editor .sc-editor-remove { background: transparent; color: var(--sc-navy); border: 1px solid var(--sc-line); }
+  .sc-editor-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .sc-editor-status { min-height: 1.3em; margin: 10px 0 0; font-size: 13px; color: var(--sc-green); }
+
   .sc-foot {
     padding: 16px 34px 22px;
     font-size: 12px;
@@ -195,6 +218,12 @@
     .sc-hero, .sc-section, .sc-foot { padding-left: 20px; padding-right: 20px; }
     .sc-facts { grid-template-columns: 1fr; }
     .sc-leaders { grid-template-columns: 1fr; }
+    .sc-editor summary { padding-left: 20px; padding-right: 20px; }
+    .sc-editor-body { padding-left: 20px; padding-right: 20px; }
+    .sc-editor-row, .sc-editor-row.announcement { grid-template-columns: 1fr 1fr; }
+    .sc-editor-row input, .sc-editor-row textarea { grid-column: span 2; }
+    .sc-editor-row input:nth-child(1), .sc-editor-row input:nth-child(2) { grid-column: span 1; }
+    .sc-editor-row .sc-editor-remove { grid-column: span 2; }
     .sc-atom { display: none; }
   }
 </style>
@@ -307,7 +336,7 @@
   <!-- ===================== EVENTS ===================== -->
   <div class="sc-section">
     <h2 class="sc-h2">Upcoming events</h2>
-    <div class="sc-events">
+    <div class="sc-events" id="sc-events-list">
       <div class="sc-event">
         <div class="sc-event-date"><span class="d">09</span><span class="m">Sep</span></div>
         <div class="sc-event-body">
@@ -337,7 +366,7 @@
        Add a link in href if you want it to open the full Canvas post. -->
   <div class="sc-section">
     <h2 class="sc-h2">Announcements</h2>
-    <div class="sc-events">
+    <div class="sc-events" id="sc-announcements-list">
       <a class="sc-event" href="#" target="_blank" rel="noopener">
         <div class="sc-event-date"><span class="d">02</span><span class="m">Sep</span></div>
         <div class="sc-event-body">
@@ -358,9 +387,157 @@
   <!-- ===================== FOOTER ===================== -->
   <div class="sc-foot">
     <span>State College of Florida · Registered Student Organization</span>
+    <span><a href="https://www.instagram.com/scf_stem/" target="_blank" rel="noopener">Instagram @SCF_STEM</a></span>
   </div>
 
+  <!-- ===================== CONTENT EDITOR ===================== -->
+  <details class="sc-editor" id="sc-editor-panel">
+    <summary>Content editor</summary>
+    <div class="sc-editor-body">
+      <form class="sc-editor-gate" id="sc-editor-gate">
+        <label for="sc-editor-password">Enter editor password
+          <input id="sc-editor-password" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">Open editor</button>
+        <p class="sc-editor-error" id="sc-editor-error" role="alert" aria-live="polite"></p>
+      </form>
+      <div class="sc-editor-content" id="sc-editor-content" hidden>
+        <p class="sc-editor-note">Changes update this preview and are saved only in this browser. To publish changes for everyone, copy the updated values into the EVENTS and ANNOUNCEMENTS sections in index.html.</p>
+        <div class="sc-editor-group">
+          <h3>Upcoming events</h3>
+          <div class="sc-editor-list" id="sc-events-editor"></div>
+          <div class="sc-editor-actions"><button type="button" id="sc-add-event">Add event</button></div>
+        </div>
+        <div class="sc-editor-group">
+          <h3>Announcements</h3>
+          <div class="sc-editor-list" id="sc-announcements-editor"></div>
+          <div class="sc-editor-actions"><button type="button" id="sc-add-announcement">Add announcement</button></div>
+        </div>
+        <div class="sc-editor-actions">
+          <button type="button" id="sc-save-content">Save changes</button>
+          <button type="button" class="sc-editor-remove" id="sc-reset-content">Reset saved changes</button>
+        </div>
+        <p class="sc-editor-status" id="sc-editor-status" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </details>
+
 </div>
+
+<script>
+  const defaultContent = {
+    events: [
+      { day: "09", month: "Sep", title: "Second meeting of the semester", description: "Intro to STEM Club, project sign-ups, and fundrasing ideas. Building 25, Rm 108." },
+      { day: "21-25", month: "Sep", title: "Coding Week", description: "A look at Coding and Artificial Intelligence pathways into engineering programs." },
+      { day: "TBD", month: "Oct", title: "Build night: mini robotics", description: "Teams assemble and program a simple line-following robot." }
+    ],
+    announcements: [
+      { day: "02", month: "Sep", title: "Welcome back!", description: "Second meeting is Sep 9 — bring a friend, and good vibes.", url: "" },
+      { day: "28", month: "Aug", title: "Officer applications open", description: "Interested in a leadership role next year? Talk to our leadership team this year for shadow opportunities.", url: "" }
+    ]
+  };
+  const contentStorageKey = "scf-stem-club-content";
+  const editorPassword = "STEMSCF26!";
+  let clubContent = loadContent();
+
+  function loadContent() {
+    try {
+      const savedContent = localStorage.getItem(contentStorageKey);
+      return savedContent ? JSON.parse(savedContent) : structuredClone(defaultContent);
+    } catch (error) {
+      return structuredClone(defaultContent);
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
+  }
+
+  function renderContent() {
+    document.getElementById("sc-events-list").innerHTML = clubContent.events.map(event => `
+      <div class="sc-event">
+        <div class="sc-event-date"><span class="d">${escapeHtml(event.day)}</span><span class="m">${escapeHtml(event.month)}</span></div>
+        <div class="sc-event-body"><h3>${escapeHtml(event.title)}</h3><p>${escapeHtml(event.description)}</p></div>
+      </div>`).join("");
+    document.getElementById("sc-announcements-list").innerHTML = clubContent.announcements.map(announcement => `
+      <a class="sc-event" href="${escapeHtml(announcement.url || "#")}" target="_blank" rel="noopener">
+        <div class="sc-event-date"><span class="d">${escapeHtml(announcement.day)}</span><span class="m">${escapeHtml(announcement.month)}</span></div>
+        <div class="sc-event-body"><h3>${escapeHtml(announcement.title)}</h3><p>${escapeHtml(announcement.description)}</p></div>
+      </a>`).join("");
+    renderEditor("events");
+    renderEditor("announcements");
+  }
+
+  function renderEditor(contentType) {
+    const editor = document.getElementById(`sc-${contentType}-editor`);
+    editor.innerHTML = clubContent[contentType].map((item, index) => `
+      <div class="sc-editor-row ${contentType === "announcements" ? "announcement" : ""}" data-type="${contentType}" data-index="${index}">
+        <input aria-label="Day" value="${escapeHtml(item.day)}" placeholder="Day">
+        <input aria-label="Month" value="${escapeHtml(item.month)}" placeholder="Month">
+        <input aria-label="Title" value="${escapeHtml(item.title)}" placeholder="Title">
+        <textarea aria-label="Description" placeholder="Description">${escapeHtml(item.description)}</textarea>
+        ${contentType === "announcements" ? `<input aria-label="Link" value="${escapeHtml(item.url || "")}" placeholder="Optional link">` : ""}
+        <button type="button" class="sc-editor-remove">Remove</button>
+      </div>`).join("");
+    editor.querySelectorAll(".sc-editor-remove").forEach(button => button.addEventListener("click", event => {
+      const row = event.currentTarget.closest(".sc-editor-row");
+      clubContent[contentType].splice(Number(row.dataset.index), 1);
+      renderContent();
+    }));
+  }
+
+  function readEditor(contentType) {
+    return [...document.querySelectorAll(`#sc-${contentType}-editor .sc-editor-row`)].map(row => {
+      const fields = row.querySelectorAll("input, textarea");
+      return { day: fields[0].value, month: fields[1].value, title: fields[2].value, description: fields[3].value, ...(contentType === "announcements" ? { url: fields[4].value } : {}) };
+    });
+  }
+
+  document.getElementById("sc-editor-gate").addEventListener("submit", event => {
+    event.preventDefault();
+    const passwordInput = document.getElementById("sc-editor-password");
+    const errorMessage = document.getElementById("sc-editor-error");
+    if (passwordInput.value === editorPassword) {
+      document.getElementById("sc-editor-content").hidden = false;
+      document.getElementById("sc-editor-gate").hidden = true;
+      errorMessage.textContent = "";
+      passwordInput.value = "";
+    } else {
+      errorMessage.textContent = "Incorrect password.";
+      passwordInput.select();
+    }
+  });
+  document.getElementById("sc-editor-panel").addEventListener("toggle", event => {
+    if (!event.currentTarget.open) {
+      document.getElementById("sc-editor-content").hidden = true;
+      document.getElementById("sc-editor-gate").hidden = false;
+      document.getElementById("sc-editor-error").textContent = "";
+    }
+  });
+
+  document.getElementById("sc-add-event").addEventListener("click", () => {
+    clubContent.events.push({ day: "", month: "", title: "New event", description: "" });
+    renderContent();
+  });
+  document.getElementById("sc-add-announcement").addEventListener("click", () => {
+    clubContent.announcements.push({ day: "", month: "", title: "New announcement", description: "", url: "" });
+    renderContent();
+  });
+  document.getElementById("sc-save-content").addEventListener("click", () => {
+    clubContent.events = readEditor("events");
+    clubContent.announcements = readEditor("announcements");
+    localStorage.setItem(contentStorageKey, JSON.stringify(clubContent));
+    renderContent();
+    document.getElementById("sc-editor-status").textContent = "Changes saved in this browser.";
+  });
+  document.getElementById("sc-reset-content").addEventListener("click", () => {
+    localStorage.removeItem(contentStorageKey);
+    clubContent = structuredClone(defaultContent);
+    renderContent();
+    document.getElementById("sc-editor-status").textContent = "Saved changes reset.";
+  });
+  renderContent();
+</script>
 
 </body>
 </html>

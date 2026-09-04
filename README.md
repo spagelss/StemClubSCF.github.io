@@ -42,3 +42,15 @@ Announcements — the `ANNOUNCEMENTS` section. This is a manual list
 Canvas announcement if you want it to show here too.
 Colors — all defined once near the top of the `<style>` block as
 CSS variables (`--sc-navy`, `--sc-green`, etc).
+
+The page also includes a collapsed `Content editor` at the bottom. It can
+add, remove, and preview event and announcement entries, and save them in
+your current browser. Since GitHub Pages is static, those browser saves do
+not publish changes for other visitors; copy the updated values into the
+`EVENTS` and `ANNOUNCEMENTS` sections of `index.html`, then push the file.
+The editor is protected by the password `STEMSCF26!` and locks again when
+the panel is closed. This is a client-side convenience gate, not secure
+authentication; anyone who can inspect the page source can discover it.
+
+The footer links to Instagram at `@SCF_STEM`:
+`https://www.instagram.com/scf_stem/`
