@@ -156,6 +156,12 @@
   .sc-activity h3 { font-family: var(--sc-font-head); font-size: 16px; font-weight: 600; margin: 0 0 4px; color: var(--sc-ink); }
   .sc-activity p { color: var(--sc-ink-soft); font-size: 14.5px; margin: 0; }
 
+  .sc-leaders { margin-top: 22px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .sc-leader { padding: 16px; background: var(--sc-mist); border-radius: 10px; }
+  .sc-leader-role { font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--sc-green); margin-bottom: 5px; }
+  .sc-leader-name { font-family: var(--sc-font-head); font-size: 16px; font-weight: 600; color: var(--sc-ink); margin: 0 0 5px; }
+  .sc-leader-contact { display: inline-block; font-size: 13px; color: var(--sc-navy); text-decoration: none; border-bottom: 1px solid var(--sc-line); }
+
   .sc-events { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
   .sc-event {
     display: grid;
@@ -188,6 +194,7 @@
     .stemclub-embed { border-radius: 0; border-left: 0; border-right: 0; }
     .sc-hero, .sc-section, .sc-foot { padding-left: 20px; padding-right: 20px; }
     .sc-facts { grid-template-columns: 1fr; }
+    .sc-leaders { grid-template-columns: 1fr; }
     .sc-atom { display: none; }
   }
 </style>
@@ -263,6 +270,36 @@
           <h3>Competitions &amp; field trips</h3>
           <p>Hackathons, local competitions, and visits to labs and companies in the Sarasota–Manatee area.</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== LEADERSHIP ===================== -->
+  <!-- Replace the placeholder names and advisor email with current details. -->
+  <div class="sc-section">
+    <h2 class="sc-h2">Club leadership</h2>
+    <p class="sc-lead">Meet the students and faculty member helping STEM Club grow this year.</p>
+    <div class="sc-leaders">
+      <div class="sc-leader">
+        <div class="sc-leader-role">STEM Advisor</div>
+        <h3 class="sc-leader-name">Natalie Singer</h3>
+        <a class="sc-leader-contact" href="mailto:nsinger@scf.edu">nsinger@scf.edu</a>
+      </div>
+      <div class="sc-leader">
+        <div class="sc-leader-role">President</div>
+        <h3 class="sc-leader-name">Sophia Pagels</h3>
+      </div>
+      <div class="sc-leader">
+        <div class="sc-leader-role">Vice President</div>
+        <h3 class="sc-leader-name">Ranali Senevirathne</h3>
+      </div>
+      <div class="sc-leader">
+        <div class="sc-leader-role">Treasurer</div>
+        <h3 class="sc-leader-name">Anh Nguyen</h3>
+      </div>
+      <div class="sc-leader">
+        <div class="sc-leader-role">Secretary</div>
+        <h3 class="sc-leader-name">Nina Pan</h3>
       </div>
     </div>
   </div>
