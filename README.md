@@ -54,3 +54,15 @@ authentication; anyone who can inspect the page source can discover it.
 
 The footer links to Instagram at `@SCF_STEM`:
 `https://www.instagram.com/scf_stem/`
+
+To publish content from the webpage editor, click `Download content JSON`,
+save the downloaded file in the repository, and run:
+`node tools/update-content.js import stemclub-content.json`
+
+You can also add entries directly from the terminal:
+`node tools/update-content.js event --day 16 --month Oct --title "Build night" --description "Robotics project session"`
+`node tools/update-content.js announcement --day 16 --month Oct --title "Meeting update" --description "Room changed to Building 25." --url "https://example.com"`
+
+After the command updates `index.html`, review the file, then push it to
+GitHub Pages. The browser change log can be downloaded separately from the
+editor with `Download change log`.

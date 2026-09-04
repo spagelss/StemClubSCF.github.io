@@ -201,6 +201,9 @@
   .sc-editor .sc-editor-remove { background: transparent; color: var(--sc-navy); border: 1px solid var(--sc-line); }
   .sc-editor-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .sc-editor-status { min-height: 1.3em; margin: 10px 0 0; font-size: 13px; color: var(--sc-green); }
+  .sc-editor-log { margin: 18px 0 0; padding-top: 18px; border-top: 1px solid var(--sc-line); }
+  .sc-editor-log h3 { margin: 0 0 8px; font-family: var(--sc-font-head); font-size: 16px; color: var(--sc-ink); }
+  .sc-editor-log-list { margin: 0; padding-left: 20px; color: var(--sc-ink-soft); font-size: 12px; }
 
   .sc-foot {
     padding: 16px 34px 22px;
@@ -416,8 +419,14 @@
         <div class="sc-editor-actions">
           <button type="button" id="sc-save-content">Save changes</button>
           <button type="button" class="sc-editor-remove" id="sc-reset-content">Reset saved changes</button>
+          <button type="button" id="sc-download-content">Download content JSON</button>
+          <button type="button" id="sc-download-log">Download change log</button>
         </div>
         <p class="sc-editor-status" id="sc-editor-status" role="status" aria-live="polite"></p>
+        <div class="sc-editor-log">
+          <h3>Recent changes</h3>
+          <ol class="sc-editor-log-list" id="sc-editor-log-list"></ol>
+        </div>
       </div>
     </div>
   </details>
@@ -425,6 +434,7 @@
 </div>
 
 <script>
+  /* CONTENT_DATA_START */
   const defaultContent = {
     events: [
       { day: "09", month: "Sep", title: "Second meeting of the semester", description: "Intro to STEM Club, project sign-ups, and fundrasing ideas. Building 25, Rm 108." },
@@ -436,7 +446,9 @@
       { day: "28", month: "Aug", title: "Officer applications open", description: "Interested in a leadership role next year? Talk to our leadership team this year for shadow opportunities.", url: "" }
     ]
   };
+  /* CONTENT_DATA_END */
   const contentStorageKey = "scf-stem-club-content";
+  const changeLogStorageKey = "scf-stem-club-change-log";
   const editorPassword = "STEMSCF26!";
   let clubContent = loadContent();
 
@@ -447,6 +459,36 @@
     } catch (error) {
       return structuredClone(defaultContent);
     }
+  }
+
+  function loadChangeLog() {
+    try {
+      return JSON.parse(localStorage.getItem(changeLogStorageKey) || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function recordChange(action) {
+    const changeLog = loadChangeLog();
+    changeLog.unshift({ action, timestamp: new Date().toISOString(), content: structuredClone(clubContent) });
+    localStorage.setItem(changeLogStorageKey, JSON.stringify(changeLog.slice(0, 25)));
+    renderChangeLog();
+  }
+
+  function renderChangeLog() {
+    const changeLog = loadChangeLog();
+    document.getElementById("sc-editor-log-list").innerHTML = changeLog.length
+      ? changeLog.slice(0, 5).map(change => `<li>${escapeHtml(change.action)} - ${escapeHtml(new Date(change.timestamp).toLocaleString())}</li>`).join("")
+      : "<li>No changes logged yet.</li>";
+  }
+
+  function downloadFile(filename, content) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([content], { type: "application/json" }));
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(link.href);
   }
 
   function escapeHtml(value) {
@@ -527,16 +569,28 @@
     clubContent.events = readEditor("events");
     clubContent.announcements = readEditor("announcements");
     localStorage.setItem(contentStorageKey, JSON.stringify(clubContent));
+    recordChange("Saved content");
     renderContent();
     document.getElementById("sc-editor-status").textContent = "Changes saved in this browser.";
   });
   document.getElementById("sc-reset-content").addEventListener("click", () => {
     localStorage.removeItem(contentStorageKey);
     clubContent = structuredClone(defaultContent);
+    recordChange("Reset content");
     renderContent();
     document.getElementById("sc-editor-status").textContent = "Saved changes reset.";
   });
+  document.getElementById("sc-download-content").addEventListener("click", () => {
+    downloadFile("stemclub-content.json", JSON.stringify(clubContent, null, 2));
+    recordChange("Downloaded content JSON");
+    document.getElementById("sc-editor-status").textContent = "Content JSON downloaded. Run the import command from the README to publish it.";
+  });
+  document.getElementById("sc-download-log").addEventListener("click", () => {
+    downloadFile("stemclub-change-log.json", JSON.stringify(loadChangeLog(), null, 2));
+    document.getElementById("sc-editor-status").textContent = "Change log downloaded.";
+  });
   renderContent();
+  renderChangeLog();
 </script>
 
 </body>
